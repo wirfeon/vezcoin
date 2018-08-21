@@ -1,0 +1,21 @@
+[Unit]
+Description=Vezcoin, the Telegram bot
+After=network.target
+
+[Service]
+Type=simple
+User=nobody
+Environment=PIPENV_VENV_IN_PROJECT=1
+Environment=BOT_TOKEN=635674079:AAEtBsinbHOHsG07AHQu_OUjs4v_2F0x2Fc
+Environment=WEB_HOOK=https://207.154.195.62:8443/
+Environment=PORT=9003
+Environment=URL_LOCATION=/
+Environment=CERTIFICATE=/etc/nginx/ssl/server.pem
+Environment=NIS_ADDRESS=http://alice6.nem.ninja:7890
+WorkingDirectory=/www/vezcoin/bountybot
+ExecStart=/usr/local/bin/pipenv run python3 bot.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+Alias=vezcoin.bountybot

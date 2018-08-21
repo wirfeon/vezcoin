@@ -1,0 +1,20 @@
+[Unit]
+Description=Pricebot
+After=network.target
+
+[Service]
+Type=simple
+User=nobody
+Environment=PIPENV_VENV_IN_PROJECT=1
+Environment=BOT_TOKEN=674612326:AAFiPVe-ptiuTrEHH0NZKo-Z8D5fsZSBVH4
+Environment=WEB_HOOK=https://207.154.195.62:8443/674612326:AAFiPVe-ptiuTrEHH0NZKo-Z8D5fsZSBVH4
+Environment=PORT=9005
+Environment=URL_LOCATION=/
+Environment=CERTIFICATE=/etc/nginx/ssl/server.pem
+WorkingDirectory=/www/vezcoin/pricebot
+ExecStart=/usr/local/bin/pipenv run python3 bot.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+Alias=vezcoin.pricebot
