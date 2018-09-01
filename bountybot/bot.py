@@ -62,8 +62,7 @@ def new_chat_members(bot, update):
 """
 Welcome to the myCoinvest (CVZ) chat! 🌚🚀
 
-Please read the pinned message at
-https://t.me/MCVOfficial/10046 before you post.
+Please read the pinned message at https://t.me/MCVOfficial/11681 before you post.
 """, disable_web_page_preview = True)
 
     log.append((ts, smsg.message_id, update.message.chat.id))    
@@ -124,7 +123,10 @@ def scrape(bot, update):
 
     while (log and log[0][0] + 40 <= time.time()):
         logger.info("Deleting %d %d" % (log[0][2], log[0][1]))
-        bot.delete_message(log[0][2], log[0][1])
+        try:
+            bot.delete_message(log[0][2], log[0][1])
+        except Exception as e:
+            logger.warn("Exception: %s" % e)
         log.pop(0)   
 
 def reset(bot, update):
@@ -156,10 +158,9 @@ def fallback(bot, update):
     global lottery_group, lottery_file, lottery
 
     logger.info("Fallback '%s' %d", update.message.from_user.username, update.message.chat.id)
-    logger.info("%d %d %d", update.message.chat.id == lottery_group, update.message.from_user.username != "leoinker", update.message.from_user.username not in lottery)
 
-    if (update.message.chat.id == lottery_group and update.message.from_user.username not in ()):
-        if (update.message.from_user.username not in lottery):
+    if (update.message.chat.id == lottery_group and update.message.from_user.username not in ("leoinker", "coreyCVZ", "KelMCV", "DariousMyCoinvest")):
+        if (update.message.from_user.username and update.message.from_user.username not in lottery):
             logger.info("Adding candidate '%s' %d" % (update.message.from_user.username, len(lottery)))
 
             lottery.append(update.message.from_user.username)
@@ -183,9 +184,12 @@ def pick(bot, update):
     global lottery_group, lottery_file, lottery
 
     if (update.message.chat.id == lottery_group and update.message.from_user.username in ("wirfeon", "leoinker")):
+    #if (update.message.from_user.username in ("wirfeon", "leoinker")):
         if (lottery):
+            logger.info("Lottery: %s", ", ".join(lottery))
             random.seed(time.time())
-            i = random.randint(0, len(lottery) - 1) 
+            i = random.randint(0, len(lottery) - 1)
+            logger.info("Pick %d" % i) 
             update.message.chat.send_message("And the winner is...")
             time.sleep(3)
             update.message.chat.send_message("@%s" % lottery[i])
