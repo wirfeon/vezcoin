@@ -2,9 +2,16 @@
 
 #set -v
 
-P=/www/vezcoin/pricebot
+if [ "$#" -ne 2 ]; then
+    echo "Illegal number of parameters"
+    echo "Usage:"
+    echo "./install \"service name\" \"path to install dir\""
+    exit 1
+fi
+
+P=$2
 S=$PWD
-SERVICE_NAME=vezcoin.pricebot
+SERVICE_NAME=$1
 
 rm -f /tmp/$SERVICE_NAME
 
@@ -31,6 +38,11 @@ if [ ! -e /etc/systemd/system/$SERVICE_NAME.service ]; then
     sudo ln -sf $P/service /etc/systemd/system/$SERVICE_NAME.service 
 else 
     diff -q $P/service service > /dev/null || (sudo cp service $P/ && sudo systemctl daemon-reload)
+fi
+
+if [ ! -e $P/data ]; then
+    sudo mkdir $P/data
+    sudo chown nobody $P/data
 fi
 
 sudo systemctl restart $SERVICE_NAME
