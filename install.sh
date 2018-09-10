@@ -2,48 +2,51 @@
 
 #set -v
 
-if [ "$#" -ne 2 ]; then
+if [ "$#" -ne 3 ]; then
     echo "Illegal number of parameters"
     echo "Usage:"
-    echo "./install \"service name\" \"path to install dir\""
+    echo "./install \"group name\" \"service name\" \"path to install dir\""
     exit 1
 fi
 
-P=$2
-S=$PWD
-SERVICE_NAME=$1
+G=$1
+S=$2
+P=$3
+SRC=$PWD
 
-rm -f /tmp/$SERVICE_NAME
+INSTALL=$P/$G/$S
 
-[ ! -e $P ] && sudo mkdir -p $P
+rm -f /tmp/$G.$S
 
-diff -q $P/bot.py bot.py > /dev/null 2>&1 || sudo cp bot.py $P/
-diff -q $P/Pipfile Pipfile > /dev/null 2>&1 || (sudo cp Pipfile $P/ && echo 1 > /tmp/$SERVICE_NAME)
+[ ! -e $INSTALL ] && sudo mkdir -p $INSTALL
 
-if [ ! -e $P/Pipfile.lock ]; then
-    echo 1 > /tmp/$SERVICE_NAME
+diff -q $INSTALL/bot.py $S/bot.py > /dev/null 2>&1 || sudo cp $S/bot.py $INSTALL/
+diff -q $INSTALL/Pipfile $S/Pipfile > /dev/null 2>&1 || (sudo cp $S/Pipfile $INSTALL/ && echo 1 > /tmp/$G.$S)
+
+if [ ! -e $INSTALL/Pipfile.lock ]; then
+    echo 1 > /tmp/$G.$S
 fi
 
-if [ -e /tmp/$SERVICE_NAME ] && [ `cat /tmp/$SERVICE_NAME` == 1 ]; then
-    cd $P
+if [ -e /tmp/$G.$S ] && [ `cat /tmp/$G.$S` == 1 ]; then
+    cd $INSTALL
     sudo env PIPENV_VENV_IN_PROJECT=1 pipenv install --three
     sudo env PIPENV_VENV_IN_PROJECT=1 pipenv update
-    cd $S
+    cd $SRC
 fi
 
-rm -f /tmp/$SERVICE_NAME
+rm -f /tmp/$G.$S
 
-if [ ! -e /etc/systemd/system/$SERVICE_NAME.service ]; then
-    sudo cp service $P/
-    sudo ln -sf $P/service /etc/systemd/system/$SERVICE_NAME.service 
+if [ ! -e /etc/systemd/system/$G.$S.service ]; then
+    sudo cp $S/service $INSTALL/
+    sudo ln -sf $INSTALL/service /etc/systemd/system/$G.$S.service 
 else 
-    diff -q $P/service service > /dev/null || (sudo cp service $P/ && sudo systemctl daemon-reload)
+    diff -q $INSTALL/service service > /dev/null || (sudo cp $S/service $INSTALL/ && sudo systemctl daemon-reload)
 fi
 
-if [ ! -e $P/data ]; then
-    sudo mkdir $P/data
-    sudo chown nobody $P/data
+if [ ! -e $INSTALL/data ]; then
+    sudo mkdir $INSTALL/data
+    sudo chown $G $INSTALL/data
 fi
 
-sudo systemctl restart $SERVICE_NAME
-sudo systemctl status $SERVICE_NAME
+sudo systemctl restart $G.$S.service
+sudo systemctl status $G.$S.service
