@@ -7,6 +7,7 @@ aptitude update
 aptitude install python3 python3-pip 
 sudo pip3 install --prefix /usr/local/ pipenv
 ```
+Here are 3 bots for MyCoinvest telegram group chat. They can bu run on any machine with Python3 installed but current installation manual is for debian/linux.
 
 ## Installing
 
@@ -28,7 +29,9 @@ Edit configuration in pricebot/service:
  * WorkingDirectory - Install path of the bot
 
 Run the install script
-```./install.sh mycoinvest pricebot /www```
+```
+./install.sh mycoinvest pricebot /www
+```
 
 Parameters are respectively: 
  * group name
@@ -36,7 +39,11 @@ Parameters are respectively:
  * install directory
 
 The bot should be up and running now. You can check with
-```systemctl status mycoinvest.pricebot.service```
+```
+systemctl status mycoinvest.pricebot.service
+```
 
 Logs can be seen with
-```journalctl -f -u mycoinvest.pricebot.service```
+```
+journalctl -f -u mycoinvest.pricebot.service
+```
