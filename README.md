@@ -26,3 +26,17 @@ Edit configuration in pricebot/service:
  * Environment=PORT - Local port on which the bot will listen
  * Environment=CERTIFICATE - Path to .pem file of your bots certificate
  * WorkingDirectory - Install path of the bot
+
+Run the install script
+```./install.sh mycoinvest pricebot /www```
+
+Parameters are respectively: 
+ * group name
+ * service name - must be one of the pricebot, bountybot, helperbot
+ * install directory
+
+The bot should be up and running now. You can check with
+```systemctl status mycoinvest.pricebot.service```
+
+Logs can be seen with
+```journalctl -f -u mycoinvest.pricebot.service```
