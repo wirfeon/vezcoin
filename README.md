@@ -48,3 +48,21 @@ Logs can be seen with
 ```
 journalctl -f -u mycoinvest.pricebot.service
 ```
+## HTTPS
+Bots are configured to handle http only. You must strip SSL on webhook API via Nginx or something similar.
+
+### Using Nginx
+```
+aptitude install nginx
+```
+Edit /etc/nginx/nginx.conf to proxy pass traffic from a webhook to you bot and restart Nginx.
+```
+location /674612326:AAFiPVe-ptiuTrEHH0NZKo-Z8D5fsZSBVH4 { 
+  proxy_pass  http://127.0.0.1:9005/; 
+
+  proxy_set_header Host $host;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Proto $scheme;
+}
+```
