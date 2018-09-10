@@ -1,3 +1,5 @@
+Here are 3 bots for MyCoinvest telegram group chat. They can bu run on any machine with Python3 installed but current installation manual is for debian/linux.
+
 ## Prerequisities
 
 Installing python3, its package manager and virtual environment.
@@ -7,7 +9,6 @@ aptitude update
 aptitude install python3 python3-pip 
 sudo pip3 install --prefix /usr/local/ pipenv
 ```
-Here are 3 bots for MyCoinvest telegram group chat. They can bu run on any machine with Python3 installed but current installation manual is for debian/linux.
 
 ## Installing
 
