@@ -1,17 +1,26 @@
 ## Prerequisities
 
+Installing python3, its package manager and virtual environment.
+
+```
 aptitude update
 aptitude install python3 python3-pip 
-
 sudo pip3 install --prefix /usr/local/ pipenv
+```
 
 ## Installing
 
+Get the source code
+```
 git clone git@github.com:wirfeon/vezcoin.git
+```
 
+Prepare the configuration
+```
 cp pricebot/service.template pricebot/service
+```
 
-Edit runtime setting in pricebot/service:
+Edit configuration in pricebot/service:
  * Environment=BOT_TOKEN - Bot token according to BotFather
  * Environment=WEB_HOOK - Web hook for Telegram API
  * Environment=PORT - Local port on which the bot will listen
