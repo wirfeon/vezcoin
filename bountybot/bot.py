@@ -170,7 +170,7 @@ def fallback(bot, update):
 def start_lottery(bot, update):
     global lottery_group, lottery_file, lottery
 
-    if (update.message.from_user.username in ("wirfeon", "leoinker")):
+    if (update.message.from_user.username in ("leoinker")):
         f = open("data/lottery_group.txt", "w")
         f.write("%d" % update.message.chat.id)
         f.close()
@@ -183,7 +183,7 @@ def start_lottery(bot, update):
 def pick(bot, update):
     global lottery_group, lottery_file, lottery
 
-    if (update.message.chat.id == lottery_group and update.message.from_user.username in ("wirfeon", "leoinker")):
+    if (update.message.chat.id == lottery_group and update.message.from_user.username in ("leoinker")):
     #if (update.message.from_user.username in ("wirfeon", "leoinker")):
         if (lottery):
             logger.info("Lottery: %s", ", ".join(lottery))

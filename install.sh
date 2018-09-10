@@ -40,7 +40,7 @@ if [ ! -e /etc/systemd/system/$G.$S.service ]; then
     sudo cp $S/service $INSTALL/
     sudo ln -sf $INSTALL/service /etc/systemd/system/$G.$S.service 
 else 
-    diff -q $INSTALL/service service > /dev/null || (sudo cp $S/service $INSTALL/ && sudo systemctl daemon-reload)
+    diff -q $INSTALL/service $S/service > /dev/null || (sudo cp $S/service $INSTALL/ && sudo systemctl daemon-reload)
 fi
 
 if [ ! -e $INSTALL/data ]; then
